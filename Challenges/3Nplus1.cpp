@@ -9,32 +9,36 @@
 */
 
 #include <stdio.h>
-#include <vector>
+#include <utility>
 
-void threeNplus1(unsigned i, unsigned j)
+const unsigned MAX = 1000000;
+
+unsigned threeNplus1(unsigned i, unsigned j)
 {
+	if (i > j) std::swap(i, j); //in case someone decides to input in wrong order
 	//max will be the result, count starts at 1 because i also counts.
-	unsigned max = 0, count = 1, l;
+	unsigned max = 0, count, n;
 	for (int k = i; k <= j; k++)		//loop between i and j
 	{
-		l = k; //copy k, so we can mess with it
-		while (l != 1) 
+		n = k;							//copy k, so we can mess with it
+		count = 1;						//reset count to 1 for new iteration
+		while (n != 1) 
 		{
-			if (l % 2 == 0) l = l / 2;	//even number
-			else l = 3 * l + 1;			//odd number
+			if (n % 2 == 0) { n = n / 2; }	//even number
+			else { n = 3 * n + 1; }			//odd number
 			++count;
 		}
 		if (count > max) max = count;	//set new max if count is bigger
-		count = 1;						//reset count to 1 for new iteration
 	}
-	printf("%d %d %d \n", i, j, max);	//print as part of solution
+	return max;
 }
 
 int main()
 {
-	threeNplus1(1, 10);
-	threeNplus1(100, 200);
-	threeNplus1(201, 210);
-	threeNplus1(900, 1000);
+	unsigned i, j;
+	while (scanf("%u %u\n", &i, &j) != EOF)
+	{
+		if(i < MAX && j < MAX) printf("%d %d %d\n", i, j, threeNplus1(i, j));
+	}
 	return 0;
 }
