@@ -8,14 +8,13 @@
 	by the same number of lines showing expenses for a student, in dollar and cents.
 	Output is one line stating the total amount in dollars and cents that needs to be exchanged
 	for the costs to be equalised.
+
+	ID: 10137
 */
 
-#include <fstream>
+
 #include <vector>
 #include <string>
-#include <iostream>
-
-
 
 void theTrip(std::vector<std::string> &input)
 {
@@ -51,9 +50,8 @@ void theTrip(std::vector<std::string> &input)
 int main()
 {
 	std::vector<std::string> input;
-	std::ifstream f("trip.txt");
-	std::string line;
-	while (getline(f, line))
+	char line[CHAR_MAX];
+	while (fgets(line, CHAR_MAX, stdin))
 	{
 		input.push_back(line);
 	}

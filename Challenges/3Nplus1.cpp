@@ -6,6 +6,8 @@
 	number of steps for n to reach 1.
 	Print results thusly: i j max
 	Guarantee: i and or j is always bigger than zero and smaller than 1 million.
+
+	ID: 100
 */
 
 #include <stdio.h>
