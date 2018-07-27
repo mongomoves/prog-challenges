@@ -10,7 +10,6 @@
 	ID: 10189
 */
 
-#include <iostream>
 #include <vector>
 #include <string>
 
