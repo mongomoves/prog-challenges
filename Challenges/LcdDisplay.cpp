@@ -105,6 +105,7 @@ int main()
 	while (scanf("%d %s", &s, &n) > 0)
 	{
 		if (s == 0) { return 0; }					//If end of input
+		if (s > 10) continue;
 		if (std::stoi(n) > 10000000) continue;		//If the number is bigger than the limit
 		numbers = int_to_array(std::string(n));
 		for (int i = 0; i < numbers.size(); i++)	//Create each number
