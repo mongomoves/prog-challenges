@@ -5,50 +5,27 @@
 #include <stdio.h>
 #include <vector>
 #include <string>
-#include <iostream>
 
 #define NUMBER_VEC std::vector<std::vector<char>>
 enum ROW_TYPE {CENTER_BAR, LEFT_BAR, RIGHT_BAR, BOTH_BAR, BLANK};
 
-
-void printNumber(NUMBER_VEC &number, unsigned rowLength)
+//Prints the rows in the vectors, and line breaks everytime it's done the same as the number of digits.
+void printNumber(std::vector<NUMBER_VEC> &numbers, unsigned rowLength, unsigned size)
 {
-	for (int i = 0; i < number.size(); i++)
+	for (int i = 0; i < 2 * size + 3; i++)
 	{
-		for (int j = 0; j < number[i].size(); j++)
+		for (int j = 0; j < numbers.size(); j++)
 		{
-			printf("%c", number[i][j]);
+			for (int k = 0; k < numbers.at(j).at(i).size(); k++)
+			{
+				printf("%c", numbers.at(j).at(i).at(k));
+			}
+			if ((j + 1) % rowLength == 0) printf("\n");
 		}
-		if ((i + 1) % rowLength == 0) printf("\n");
 	}
-	/*for (int i = 0; i < number.size(); i++)
-	{
-		if (number[i][0] == '|' || number[i][number[i].size() - 2] == '|')
-		{
-			for(int k = 0; k < size; k++)
-			{
-				for (int j = 0; j < number[i].size(); j++)
-				{
-					printf("%c", number[i][j]);
-				}
-				if ((k + 1) % rowLength == 0) {
-					//std::cout << (i % rowLength - 1 == 0) << " " << "\n";
-					printf("\n");
-				}
-			}
-			if ((i + 1) % rowLength == 0) printf("\n");
-		}
-		else 
-		{
-			for (int j = 0; j < number[i].size(); j++)
-			{
-				printf("%c", number[i][j]);
-			}
-			if ((i + 1) % rowLength == 0) printf("\n");
-		}
-	}*/
 }
 
+//Fills a row with filler stuff.
 void fill_row(std::vector<char> &row, unsigned size, char filler)
 {
 	for (int i = 0; i < size; i++)
@@ -57,6 +34,7 @@ void fill_row(std::vector<char> &row, unsigned size, char filler)
 	}
 }
 
+//Creates a row of the enum type. Size says how much filler is needded for blanks and '-'.
 std::vector<char> create_row(ROW_TYPE row_type, unsigned size)
 {
 	std::vector<char> row;
@@ -88,6 +66,7 @@ std::vector<char> create_row(ROW_TYPE row_type, unsigned size)
 	return row;
 }
 
+//Just to put digits from string into an int array
 std::vector<int> int_to_array(std::string input)
 {
 	std::vector<int> numbers;
@@ -100,55 +79,53 @@ std::vector<int> int_to_array(std::string input)
 
 int main()
 {
-	/*
-	std::vector<char> CENTER_LINE = { ' ', '-', ' ' };
-	std::vector<char> LEFT_BAR = { '|', ' ', ' ' };
-	std::vector<char> RIGHT_BAR = { ' ', ' ', '|' };
-	std::vector<char> TWO_BARS = { '|', ' ', '|' };
-	std::vector<char> BLANK = { ' ', ' ', ' ' };*/
-	
-	//NUMBER_VEC ZERO = { CENTER_LINE, TWO_BARS, BLANK, TWO_BARS, CENTER_LINE };
-	//NUMBER_VEC ONE = { BLANK, RIGHT_BAR, BLANK, RIGHT_BAR, BLANK };
-	//NUMBER_VEC TWO = { CENTER_LINE, RIGHT_BAR, CENTER_LINE, LEFT_BAR, CENTER_LINE };
-	//Fylla "endimensionellt", tror det går? Bryt rad när den bläddrat lika många som där är siffror
-	//NUMBER_VEC all = { ZERO[0], ONE[0], TWO[0] };
-
+	const int MAX_NUMBER_LENGTH = 8; //Limit according to assignment is 99 999 999
+	//The design of the various digits.
 	std::vector<ROW_TYPE> ZERO = { CENTER_BAR, BOTH_BAR, BLANK, BOTH_BAR, CENTER_BAR };
 	std::vector<ROW_TYPE> ONE = { BLANK, RIGHT_BAR, BLANK, RIGHT_BAR, BLANK };
 	std::vector<ROW_TYPE> TWO = { CENTER_BAR, RIGHT_BAR, CENTER_BAR, LEFT_BAR, CENTER_BAR };
+	std::vector<ROW_TYPE> THREE = { CENTER_BAR, RIGHT_BAR, CENTER_BAR, RIGHT_BAR, CENTER_BAR };
+	std::vector<ROW_TYPE> FOUR = { BLANK, BOTH_BAR, CENTER_BAR, RIGHT_BAR, BLANK };
+	std::vector<ROW_TYPE> FIVE = { CENTER_BAR, LEFT_BAR, CENTER_BAR, RIGHT_BAR, CENTER_BAR };
+	std::vector<ROW_TYPE> SIX = { CENTER_BAR, LEFT_BAR, CENTER_BAR, BOTH_BAR, CENTER_BAR };
+	std::vector<ROW_TYPE> SEVEN = { CENTER_BAR, RIGHT_BAR, BLANK, RIGHT_BAR, BLANK };
+	std::vector<ROW_TYPE> EIGHT = { CENTER_BAR, BOTH_BAR, CENTER_BAR, BOTH_BAR, CENTER_BAR };
+	std::vector<ROW_TYPE> NINE = { CENTER_BAR, BOTH_BAR, CENTER_BAR, RIGHT_BAR, CENTER_BAR };
+	//Vector for getting a digit design, where index is the digit
+	std::vector<std::vector<ROW_TYPE>> numberFormats = {
+		ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE };
 
-	std::vector<std::vector<ROW_TYPE>> numberFormats = { ZERO, ONE, TWO };
-	NUMBER_VEC all;
-	unsigned n;
-	char s[CHAR_MAX];
-	std::vector<int> numbers;
-	std::vector<char> row;
-	while (scanf("%d %s", &n, &s) > 0)
+	NUMBER_VEC number;						//2d vector, to hold a digit
+	unsigned s;								//From input, size of output
+	char n[MAX_NUMBER_LENGTH];				//From input, the number
+	std::vector<int> numbers;				//Vector for the individual numbers in the input
+	std::vector<char> row;					//One row in a digit, ex. CENTER_BAR
+	std::vector<NUMBER_VEC> allNumbers;		//All the digits to be outputted
+	//Scanning for input
+	while (scanf("%d %s", &s, &n) > 0)
 	{
-		if (n == 0) { return 0; }
-		numbers = int_to_array(std::string(s));
-		for (int i = 0; i < 5; i++)
+		if (s == 0) { return 0; }					//If end of input
+		if (std::stoi(n) > 10000000) continue;		//If the number is bigger than the limit
+		numbers = int_to_array(std::string(n));
+		for (int i = 0; i < numbers.size(); i++)	//Create each number
 		{
-			for (int j = 0; j < numbers.size(); j++)
+			for (int j = 0; j < 5; j++)				//We know the original digit design is only size 5.
 			{
-				row = create_row(numberFormats[numbers[j]][i], n);
-				if (row[0] == '|' || row[row.size() - 2] == '|')
+				row = create_row(numberFormats[numbers[i]][j], s);
+				if (row[0] == '|' || row[row.size() - 2] == '|')	//Need as many of these blocks as the size
 				{
-					for (int k = 0; k < n; k++)
+					for (int k = 0; k < s; k++)
 					{
-						all.push_back(row);
+						number.push_back(row);
 					}
 				}
-				else
-				{
-					all.push_back(row);
-				}
-				//all.push_back(create_row(numberFormats[numbers[j]][i], n));
+				else number.push_back(row);	//No sidebars, we only need one
 			}
+			allNumbers.push_back(number);
+			number.clear();
 		}
-		printNumber(all, numbers.size());
-		all.clear();
+		printNumber(allNumbers, numbers.size(), s);
+		allNumbers.clear();
 	}
-
 	return 0;
 }
