@@ -102,7 +102,7 @@ int main()
 	std::vector<char> row;					//One row in a digit, ex. CENTER_BAR
 	std::vector<NUMBER_VEC> allNumbers;		//All the digits to be outputted
 	//Scanning for input
-	while (scanf("%d %s", &s, &n) > 0)
+	while (scanf("%d %7s", &s, n) > 0)
 	{
 		if (s == 0) { return 0; }					//If end of input
 		if (s > 10) continue;
