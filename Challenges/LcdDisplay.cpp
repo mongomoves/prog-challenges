@@ -21,6 +21,7 @@ void printNumber(std::vector<NUMBER_VEC> &numbers, int rowLength, int size)
 			{
 				printf("%c", numbers.at(j).at(i).at(k));
 			}
+			if(j < numbers.size()) printf("%c",' ');
 			if ((j + 1) % rowLength == 0) printf("\n");
 		}
 	}
@@ -63,7 +64,6 @@ std::vector<char> create_row(ROW_TYPE row_type, int size)
 		fill_row(row, size + 2, ' ');
 		break;
 	}
-	row.push_back(' ');
 	return row;
 }
 
@@ -80,7 +80,7 @@ std::vector<int> int_to_array(std::string input)
 
 int main()
 {
-	const int MAX_NUMBER_LENGTH = std::numeric_limits<char>::max(); //Limit according to assignment is 99 999 999
+	const int MAX_NUMBER_LENGTH = std::numeric_limits<char>::max();
 	//The design of the various digits.
 	std::vector<ROW_TYPE> ZERO = { CENTER_BAR, BOTH_BAR, BLANK, BOTH_BAR, CENTER_BAR };
 	std::vector<ROW_TYPE> ONE = { BLANK, RIGHT_BAR, BLANK, RIGHT_BAR, BLANK };
@@ -97,7 +97,7 @@ int main()
 		ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE };
 
 	NUMBER_VEC number;						//2d vector, to hold a digit
-	int s;								//From input, size of output
+	int s;								    //From input, size of output
 	char n[MAX_NUMBER_LENGTH];				//From input, the number
 	std::vector<int> numbers;				//Vector for the individual numbers in the input
 	std::vector<char> row;					//One row in a digit, ex. CENTER_BAR
@@ -106,15 +106,14 @@ int main()
 	while (scanf("%d %s", &s, n) > 0)
 	{
 		if (s == 0) { return 0; }					//If end of input
-		//if (s > 10) continue;
-		//if (std::stoi(n) > 10000000) continue;		//If the number is bigger than the limit
+		if(s > 10) continue;
 		numbers = int_to_array(std::string(n));
 		for (std::size_t i = 0; i < numbers.size(); i++)	//Create each number
 		{
 			for (int j = 0; j < 5; j++)				//We know the original digit design is only size 5.
 			{
 				row = create_row(numberFormats[numbers[i]][j], s);
-				if (row[0] == '|' || row[row.size() - 2] == '|')	//Need as many of these blocks as the size
+				if (row[0] == '|' || row[row.size() - 1] == '|')	//Need as many of these blocks as the size
 				{
 					for (int k = 0; k < s; k++)
 					{
