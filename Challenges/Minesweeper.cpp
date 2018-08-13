@@ -10,9 +10,9 @@
 	ID: 10189
 */
 
-#include <iostream>
 #include <vector>
 #include <string>
+#include <stdio.h>
 
 //n and m being passed is the rows and columns for the field, keeping the iterations in check.
 void printField(unsigned n, unsigned m, std::vector<std::string> &lines, unsigned count)

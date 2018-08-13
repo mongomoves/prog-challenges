@@ -14,47 +14,33 @@
 
 
 #include <vector>
-#include <string>
-
-void theTrip(std::vector<std::string> &input)
-{
-	double sum, each, exchange;
-	int students;
-	std::vector<double> expenditure;
-	for (auto it = input.begin(); it != input.end(); ++it)
-	{
-		sum = 0.0;
-		each = 0.0;
-		exchange = 0.0;
-		expenditure.clear();
-		if (std::stoi(*it) == 0) break;
-		else if ((*it).find(".") == std::string::npos)
-		{
-			students = std::stoi(*it++);
-		}
-		for (int i = 0; i < students; i++)
-		{
-			expenditure.push_back(std::stod(*it));
-			sum += std::stod(*it);
-			if (i < students - 1) ++it;
-		}
-		each = roundf((sum / students) * 100) / 100;
-		for (auto it = expenditure.begin(); it != expenditure.end(); ++it)
-		{
-			if (*it > each) exchange += ((*it) - each);
-		}
-		printf("$%.2f \n", exchange);
-	}
-}
+#include <stdio.h>
 
 int main()
 {
-	std::vector<std::string> input;
-	char line[CHAR_MAX];
-	while (fgets(line, CHAR_MAX, stdin))
+	std::vector<double> expenses;
+	int students, dollar, cent, total, exchange;
+	while (scanf("%d", &students) > 0)
 	{
-		input.push_back(line);
+		if (students == 0) return 0;
+		exchange = 0;
+		total = 0;
+		for (int i = 0; i < students; i++)
+		{
+			scanf("%d.%d", &dollar, &cent);
+			expenses.push_back((dollar * 100) + cent);
+			total += (dollar * 100) + cent;
+		}
+		double each = double(total) / students;
+		for (auto it = expenses.begin(); it != expenses.end(); ++it)
+		{
+			if (*it > each) exchange += ((*it) - each);
+		}
+		dollar = exchange / 100;
+		cent = exchange % 100;
+		double sum = double(dollar) + (double(cent) / 100);
+		printf("$%.2f\n", sum);
+		expenses.clear();
 	}
-	theTrip(input);
 	return 0;
 }
