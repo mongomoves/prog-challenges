@@ -46,27 +46,26 @@ int main()
     {
         std::stringstream strstream(line);
         sstream_to_vec(strstream, numbers);
-        jolly = true;
         if(numbers.empty()) continue;
-        if(numbers[0] <= 0 || numbers[0] >= 3000) continue; //Check if N is within bounds
-        fill_bool_vec(bool_vec, numbers[0]);
+        if(numbers.at(0) <= 0 || numbers.at(0) >= 3000) continue; //Check if N is within bounds
+        fill_bool_vec(bool_vec, numbers.at(0));
+        jolly = true;
         for(auto it = numbers.begin() + 1; it != numbers.end(); ++it) //Iterate number sequence (skipping "n")
         {
             if(std::next(it) != numbers.end())  //If not on last element
             {
-                diff = abs(*it - *(it + 1));            //Difference between current number and the following
-                if(diff >= numbers[0]) jolly = false;   //If bigger or equal to "n" it can't be jolly!
-                if(bool_vec[diff - 1]) bool_vec[diff - 1] = false; //Flip to false if diff is part of the jolly sequence
+                diff = abs(*it - *(it + 1));                //Difference between current number and the following
+                if(diff < numbers.at(0) && diff > 0)        //Makes sure we are in range
+                {
+                    if(bool_vec.at(diff - 1)) bool_vec.at(diff - 1) = false; //Flip to false if diff is part of the jolly sequence
+                }
             }
         }
-        if(jolly)
+        //If any "number" is still true, then the sequence is not jolly.
+        //Because all values in the range must be used.
+        for(auto it = bool_vec.begin(); it != bool_vec.end(); ++it)
         {
-            //If any "number" is still true, then the sequence is not jolly.
-            //Because all values in the range must be used.
-            for(auto it = bool_vec.begin(); it != bool_vec.end(); ++it)
-            {
-                if(*it) jolly = false;
-            }
+            if(*it) jolly = false;
         }
         if(jolly) std::cout << "Jolly\n";
         else std::cout << "Not jolly\n";
