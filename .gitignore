@@ -330,6 +330,7 @@ ASALocalRun/
 
 *.exe
 *.out
+*.sh
 
 *.sln
 
