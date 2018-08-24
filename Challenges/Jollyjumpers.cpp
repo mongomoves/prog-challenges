@@ -27,12 +27,16 @@ void fill_bool_vec(std::vector<bool> &vec, int n)
 //Line from input to int vector.
 void sstream_to_vec(std::stringstream &ss, std::vector<int> &vec)
 {
-    int nbr;
     vec.clear();
-    while(ss >> nbr) 
+    int nbr;
+    int n;
+    ss >> n;
+    vec.push_back(n);
+    for(int i = 0; i < n; i++)
     {
+        ss >> nbr;
         vec.push_back(nbr);
-    }    
+    }
 }
 
 int main()
@@ -46,8 +50,6 @@ int main()
     {
         std::stringstream strstream(line);
         sstream_to_vec(strstream, numbers);
-        if(numbers.empty()) continue;
-        if(numbers.at(0) <= 0 || numbers.at(0) >= 3000) continue; //Check if N is within bounds
         fill_bool_vec(bool_vec, numbers.at(0));
         jolly = true;
         for(auto it = numbers.begin() + 1; it != numbers.end(); ++it) //Iterate number sequence (skipping "n")
