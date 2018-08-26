@@ -21,7 +21,7 @@ void printNumber(std::vector<NUMBER_VEC> &numbers, int rowLength, int size)
 			{
 				printf("%c", numbers.at(j).at(i).at(k));
 			}
-			if(j < numbers.size()) printf("%c",' ');
+			if(j < numbers.size() - 1) printf("%c",' ');
 			if ((j + 1) % rowLength == 0) printf("\n");
 		}
 	}
@@ -127,6 +127,7 @@ int main()
 		}
 		printNumber(allNumbers, numbers.size(), s);
 		allNumbers.clear();
+		printf("\n");
 	}
 	return 0;
 }
