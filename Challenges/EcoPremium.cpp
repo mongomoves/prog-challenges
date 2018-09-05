@@ -1,5 +1,10 @@
+/*
+    ID: 10300
+*/
+
 #include <iostream>
 #include <math.h>
+
 int main()
 {
     int cases, farmers, land, animals, ecodegree;
