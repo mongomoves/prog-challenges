@@ -2,46 +2,29 @@
     ID: 839
 */
 
-//WL DL WR DR
-//Wl * Dl = Wr * Dr
-
 #include <iostream>
 #include <string>
-#include <sstream>
-#include <vector>
 
-int same;
+bool same;
 
-std::vector<int> strToVec(std::string line)
+int foo()
 {
-    int nbr;
-    std::vector<int> vec;
-    std::stringstream ss(line);
-    while(ss >> nbr) vec.push_back(nbr);
-    return vec;
-}
-
-int foo(std::vector<int> vec)
-{
-    int Wl = vec[0], Dl = vec[1], Wr = vec[2], Dr = vec[3];
-    if(Wl == 0) 
+    int wl, dl, wr, dr;
+    int left, right;
+    std::cin >> wl >> dl >> wr >> dr;
+    left = wl;
+    right = wr;
+    if(!wl)
     {
-        std::string line;
-        std::vector<int> vec2;
-        getline(std::cin,line);
-        vec2 = strToVec(line);
-        Wl = foo(vec2);
+        left = foo();
     }
-    if(Wr == 0)
+    if(!wr)
     {
-        std::string line;
-        std::vector<int> vec2;
-        getline(std::cin,line);
-        vec2 = strToVec(line);
-        Wr = foo(vec2);
+        right = foo();
     }
-    if(Wl * Dl != Wr * Dr) ++same;
-    return Wl + Wr;
+    //std::cout << "l * dl: " << l * dl << " r * dr: " << r * dr << "\n";
+    if(left * dl != right * dr) same = false;
+    return left + right;
 }
 
 int main()
@@ -49,25 +32,18 @@ int main()
     int cases;
     std::string line;
     std::cin >> cases;
-    std::vector<int> inputVec;
     getline(std::cin, line); //Get rid of first blank line
-    while(cases)
+    while(cases--)
     {
-        same = 0;
+        same = true;
         while(getline(std::cin, line))
         {
-            if(line.empty())
-            {
-                if(!same) std::cout << "YES\n";
-                else std::cout << "NO\n";
-            }
-            else
-            {
-                inputVec = strToVec(line);
-                foo(inputVec);
-            }
+            foo();
+            if(line.empty()) break;
         }
-        --cases;
+        if(same) std::cout << "YES\n";
+        else std::cout << "NO\n";
+        if(cases) std::cout << "\n";
     }
     return 0;
 }
