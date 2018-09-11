@@ -10,7 +10,6 @@ class UF {
     std::vector<int> sz;
     public:
         UF(int n) {
-            //n++; //Cheating?
             for(int i = 0; i < n + 1; i++) 
             {
                 id.push_back(i);
@@ -21,23 +20,7 @@ class UF {
     int find(int p);
     void onion(int p, int q);
     int compSize(int p) {return sz[find(p)];};
-    void print();
 };
-
-void UF::print()
-{
-    std::cout << "id: ";
-    for(size_t i = 0; i < id.size(); i++)
-    {
-        std::cout << id[i] << " ";
-    }
-    std::cout << "\nsz: ";
-    for(size_t i = 0; i < sz.size(); i++)
-    {
-        std::cout << sz[i] << " ";
-    }
-    std::cout << "\n";
-}
 
 int UF::find(int p)
 {
@@ -55,9 +38,7 @@ int UF::find(int p)
 void UF::onion(int p, int q)
 {
     int pRoot = find(p);
-    //std::cout << "pRoot: " << pRoot << "\n";
     int qRoot = find(q);
-    //std::cout << "qRoot: " << qRoot << "\n";
     if(pRoot == qRoot) return;
     if (sz[pRoot] < sz[qRoot]) 
     {
@@ -77,7 +58,7 @@ int main()
     std::cin >> cases;
     while(cases--)
     {
-        max = 1;
+        max = 0;
         std::cin >> citizens >> pairs;          //Read boundaries for input
         UF uf(citizens);                        //New union-find obj with citizens = n
         for(int i = 0; i < pairs; i++) 
@@ -90,7 +71,6 @@ int main()
             size = uf.compSize(friend2);        //Check for both numbers, maybe unnessecary
             if(size > max) max = size;
         }
-        //uf.print();
         std::cout << max << "\n";
     }
     return 0;
