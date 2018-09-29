@@ -16,16 +16,6 @@ struct Point {
     Point(int x, int y) : x(x), y(y) {};
 };
 
-double distance(Point p1, Point p2)
-{
-    return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
-}
-
-double pytho(int a, int b)
-{
-    return sqrt((a * a) + (b * b)); 
-}
-
 int main()
 {
     int cases, maxY;
@@ -50,21 +40,16 @@ int main()
         for(size_t i = 1; i < points.size(); i++)
         {
             if(points[i].y < maxY) continue;
-
+            //The two sides of the big triangle we need
             double opposite = points[i].y - points[i - 1].y;
             double adjacent = points[i - 1].x - points[i].x;
-
+            //First find the angle for both big and small triangle
             double angleA = atan(opposite / adjacent) * 180 / PI;
-
-            double sideA = points[i].y - maxY;
-
-            double hypo = (sideA/sin(angleA * 3.14159265 / 180)) * sin(90 * 3.14159265 / 180);
-            length += hypo;
-
-            
+            //Get the hypotenuse for the small triangle
+            double hypo = ((points[i].y - maxY)/sin(angleA * 3.14159265 / 180)) * sin(90 * 3.14159265 / 180);
+            length += hypo;   
             maxY = points[i].y;
         }
-        
         std::cout << length << "\n";
         points.clear();
     }
